@@ -98,7 +98,7 @@ eval my_orange='$FG[214]'
 
 precmd() {
   vcs_info
-  print -P '\n%F{39}%~ ${git_dirty}%F{246}$vcs_info_msg_0_%f `git_arrows` `suspended_jobs`'
+  print -P '\n%F{39}%~ "${git_dirty}"%F{246}$vcs_info_msg_0_%f `git_arrows` `suspended_jobs`'
 }
 
 export PROMPT='%(?.%F{10}.%F{10}) ❯%f '

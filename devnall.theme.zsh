@@ -43,7 +43,7 @@ prompt_human_time_to_var() {
 }
 
 # stores (into prompt_cmd_exec_time) the exec time of the last command if set threshold exceeded
-# currently 5 secs, change in CMD_MAX_EXEC_TIME:=
+# (currently 5 secs, change in CMD_MAX_EXEC_TIME:=)
 prompt_check_cmd_exec_time() {
   integer elapsed
   (( elapsed = EPOCHSECONDS - ${prompt_cmd_timestamp:-$EPOCHSECONDS} ))
@@ -68,7 +68,8 @@ prompt_git_check() {
   if [[ $? -eq 1 ]]; then
     exit 0
   else
-    echo "%F{39}%f"
+    #echo "%F{39}%f"
+    echo ""
   fi
 }
 
@@ -163,22 +164,26 @@ prompt_preprompt_render() {
 	local prompt_subst_status=$options[prompt_subst]
 
 	# make sure prompt_subst is unset to prevent parameter expansion in preprompt
-	setopt local_options no_prompt_subst
+	#setopt local_options no_prompt_subst
+	setopt local_options prompt_subst
 
 	#check that no command is currently running, the preprompt will otherwise be
 	# rendered in the wrong place
 	[[ -n ${prompt_cmd_timestamp+x} && "$1" != "precmd" ]] && return
 
 	# set color for git branch/dirty status, change color if dirty check is delayed
-	local git_color=242
+	local git_color=246
 	[[ -n ${prompt_git_last_dirty_check_timestamp+x} ]] && git_color=red
 
 	# construct preprompt beginning with path
-  local preprompt="%F{blue}%~%f"
+  local preprompt=""
+  preprompt+="%F{red}${prompt_git_check}%f"
+  preprompt+="%F{blue}%~%f"
   # git info
-  preprompt+="%F{$git_color}${vcs_info_msg_0}${prompt_git_dirty}%f"
+  preprompt+="%F{246}${vcs_info_msg_0}${prompt_git_dirty}%f"
+  #preprompt+="%F{$git_color}${vcs_info_msg_0}${prompt_git_dirty}%f"
   # git pull/push arrows
-  preprompt+="%F{syan}${prompt_git_arrows}%f"
+  preprompt+="${prompt_git_arrows}"
   # username and machine (if applicable)
   preprompt+=$prompt_username
   # execution time

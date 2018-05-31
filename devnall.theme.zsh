@@ -68,8 +68,7 @@ prompt_git_check() {
   if [[ $? -eq 1 ]]; then
     exit 0
   else
-    #echo "%F{39}%f"
-    echo ""
+    echo "%F{39}%f"
   fi
 }
 
@@ -165,7 +164,7 @@ prompt_preprompt_render() {
 
 	# make sure prompt_subst is unset to prevent parameter expansion in preprompt
 	#setopt local_options no_prompt_subst
-	setopt local_options prompt_subst
+	setopt local_options no_prompt_subst
 
 	#check that no command is currently running, the preprompt will otherwise be
 	# rendered in the wrong place
@@ -177,17 +176,16 @@ prompt_preprompt_render() {
 
 	# construct preprompt beginning with path
   local preprompt=""
-  preprompt+="%F{red}${prompt_git_check}%f"
+  preprompt+="%F{blue}${prompt_git_check}%f"
   preprompt+="%F{blue}%~%f"
   # git info
-  preprompt+="%F{246}${vcs_info_msg_0}${prompt_git_dirty}%f"
-  #preprompt+="%F{$git_color}${vcs_info_msg_0}${prompt_git_dirty}%f"
+  preprompt+="%F{$git_color}${vcs_info_msg_0_}${prompt_git_dirty}%f"
   # git pull/push arrows
   preprompt+="${prompt_git_arrows}"
   # username and machine (if applicable)
   preprompt+=$prompt_username
   # execution time
-  preprompt+="%F{yellow}${prompt_cmd_exec_time}%f"
+  preprompt+="%F${my_orange}${prompt_cmd_exec_time}%f"
 
   # make sure prompt_last_preprompt is a global array
   typeset -g -a prompt_last_preprompt
